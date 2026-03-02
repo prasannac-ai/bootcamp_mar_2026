@@ -1,22 +1,24 @@
-#  Agent Chiguru AI Platform
+#  Agri tech AI Platform
 
 A **microservices-based precision agriculture platform** that helps farmers detect crop diseases, receive AI-powered treatment advice, get irrigation recommendations, and check market prices.
+
+> **Disclaimer:** For educational use only. Contains intentional bugs for learning purposes.
 
 ##  Architecture
 
 | Service | Port | Technology | Purpose |
 |---------|------|-----------|---------|
+| **Nginx** | 80 | nginx:alpine | Reverse proxy |
 | **API Gateway** | 8000 | FastAPI + JWT + Redis | Auth, rate limiting, routing |
 | **Disease Detection** | 8001 | FastAPI + MobileNetV2 + Kafka | Crop disease classification |
-| **AI Advisory (RAG)** | 8002 | LangChain + ChromaDB + Kafka | Treatment advice via RAG |
+| **AI Advisory (RAG)** | 8002 | LangChain + Qdrant + Kafka | Treatment advice via RAG |
 | **Irrigation** | 8003 | FastAPI + Redis | Rule-based irrigation scheduling |
 | **Market Price** | 8004 | FastAPI + PostgreSQL + Redis | Mandi price data & trends |
 | **Notification** | 8005 | FastAPI + Kafka | Multi-channel alerts |
-| **PostgreSQL** | 5432 | postgres:16 | Relational data |
-| **Redis** | 6379 | redis:7 | Caching & rate limiting |
-| **Kafka** | 9092 | bitnami/kafka | Event streaming |
-| **ChromaDB** | 8010 | chromadb/chroma | Vector embeddings |
-| **Zookeeper** | 2181 | bitnami/zookeeper | Kafka coordination |
+| **PostgreSQL** | 5532 | postgres:16-alpine | Relational data |
+| **Redis** | 6579 | redis:7-alpine | Caching & rate limiting |
+| **Kafka** | 9092, 9094 | apache/kafka (KRaft) | Event streaming |
+| **Qdrant** | 6433 | qdrant/qdrant | Vector embeddings |
 
 ##  Quick Start
 
@@ -28,7 +30,7 @@ cp .env.example .env
 
 ### 2. Start All Services
 ```bash
-docker compose up -d --build
+docker compose -f docker-compose_v2.yml up -d --build
 ```
 
 ### 3. Test the Platform
@@ -61,7 +63,7 @@ curl "http://localhost:8000/api/v1/market-prices?crop=rice&state=Karnataka" \
 ```
 
 ### 4. View API Documentation
-- Gateway: http://localhost:8000/docs
+- Gateway (via Nginx): http://localhost/docs — or directly http://localhost:8000/docs
 - Disease Detection: http://localhost:8001/docs
 - AI Advisory: http://localhost:8002/docs
 - Irrigation: http://localhost:8003/docs
@@ -71,21 +73,25 @@ curl "http://localhost:8000/api/v1/market-prices?crop=rice&state=Karnataka" \
 ##  Project Structure
 
 ```
-agent-chiguru-ai/
-├── docker-compose.yml          # 11-container orchestration
+AgentChiguruV2/
+├── docker-compose_v2.yml       # Full stack orchestration (12 services)
 ├── .env.example                # Environment template
+├── nginx/                      # Reverse proxy config
+│   └── nginx.conf
 ├── shared/                     # Shared across all services
 │   ├── config.py               # Pydantic settings
 │   ├── database.py             # SQLAlchemy engine
-│   ├── models/                 # 7 SQLAlchemy models
+│   ├── models/                 # SQLAlchemy models
 │   └── schemas/events.py       # Kafka event schemas
+├── migrations/                 # Alembic migrations
+├── alembic.ini                 # Alembic config
 ├── gateway/                    # API Gateway (:8000)
 ├── disease_detection/          # Disease Detection (:8001)
 ├── ai_advisory/                # AI Advisory RAG (:8002)
 ├── irrigation/                 # Irrigation Engine (:8003)
 ├── market_price/               # Market Prices (:8004)
 ├── notification/               # Notifications (:8005)
-└── database/                   # SQL init & seed data
+└── ai_ml_models/               # MobileNetV2 disease model
 ```
 
 ##  Key Features
@@ -93,7 +99,7 @@ agent-chiguru-ai/
 - **JWT Authentication** with bcrypt password hashing
 - **Redis Rate Limiting** (sliding window, 100 req/min)
 - **MobileNetV2 Disease Detection** (44 PlantVillage classes, mock fallback)
-- **LangChain RAG Pipeline** (ChromaDB + OpenAI/mock)
+- **LangChain RAG Pipeline** (Qdrant + OpenAI/mock)
 - **Rule-based Irrigation** (4 crops × 3 growth stages)
 - **Kafka Event Streaming** (4 topics, async processing)
 - **Redis Caching** (market prices, irrigation, sessions)
