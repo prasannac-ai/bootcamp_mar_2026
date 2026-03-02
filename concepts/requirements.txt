@@ -1,0 +1,38 @@
+# API & Utilities
+fastapi
+uvicorn
+pydantic
+python-dotenv
+requests
+python-multipart
+
+# Database
+sqlalchemy
+psycopg2-binary
+redis
+
+# Authentication
+fastapi-users[sqlalchemy]
+
+# Kafka
+aiokafka
+
+# Async DB Driver (used by fastapi-users async SQLAlchemy setup)
+asyncpg
+
+# AI / ML - RAG, Agentic
+langchain
+langchain-community
+langchain-openai
+langgraph
+qdrant-client
+sentence-transformers
+
+
+# AI / ML - Computer Vision
+torch
+torchvision
+ultralytics
+roboflow
+pillow
+matplotlib

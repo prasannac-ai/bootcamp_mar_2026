@@ -1,0 +1,83 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments
+sd/
+venv/
+.venv/
+env/
+
+# Distribution / packaging
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Environment variables
+.env
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# ML model artifacts and training runs
+runs/
+concepts/runs/
+concepts/dataset
+*.h5
+*.pt
+*.pth
+*.onnx
+
+# Logs
+*.log
+
+# Database
+*.db
+*.sqlite3
+
+# pytest
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+
+# mypy
+.mypy_cache/
+
+ai_advisory/
+gateway/
+ai_ml_models/
+disease_detection/
+irrigation/
+market_price/
+notification/
+shared/
+migrations/
+concepts_copy
+nginx/
+alembic.ini
+.env
+.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+
+
