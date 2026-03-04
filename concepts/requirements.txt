@@ -17,8 +17,6 @@ fastapi-users[sqlalchemy]
 # Kafka
 aiokafka
 
-# Async DB Driver (used by fastapi-users async SQLAlchemy setup)
-asyncpg
 
 # AI / ML - RAG, Agentic
 langchain
