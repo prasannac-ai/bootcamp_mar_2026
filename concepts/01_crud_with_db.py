@@ -184,6 +184,7 @@ def list_products(
     ]
 
 
+
 # ─── READ ONE ────────────────────────────
 @app.get("/products/{product_id}", response_model=ProductResponse)
 def get_product(product_id: str, db: Session = Depends(get_db)):
