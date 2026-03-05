@@ -7,12 +7,17 @@ requests
 python-multipart
 
 # # Database
-# sqlalchemy
-# psycopg2-binary
-# redis
+sqlalchemy
+psycopg2-binary
+redis
 
-# # Authentication
-# fastapi-users[sqlalchemy]
+# Authentication
+fastapi-users[sqlalchemy]
+
+# AsyncPG
+asyncpg
+
+
 
 # # Kafka
 # aiokafka
