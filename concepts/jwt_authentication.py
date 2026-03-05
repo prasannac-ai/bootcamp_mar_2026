@@ -28,6 +28,8 @@ from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTableUUID
 from sqlalchemy import DateTime, String
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column
 
 import logging
 
@@ -46,8 +48,7 @@ logger = logging.getLogger(__name__)
 # 2. DATABASE SETUP + USER MODEL
 
 
-class Base(DeclarativeBase):
-    pass
+Base = declarative_base()
 
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
@@ -59,12 +60,12 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
 
     __tablename__ = "users"
 
-    username: Mapped[str] = mapped_column(
+    username = Column(
         String(100), nullable=False, unique=True, index=True
     )
-    full_name: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
-    role: Mapped[str] = mapped_column(String(50), nullable=False, default="farmer")
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    full_name= Column(String(255), nullable=True)
+    role= Column(String(50), nullable=False, default="farmer")
+    created_at= Column(DateTime, default=datetime.utcnow)
 
 
 engine = create_async_engine(DATABASE_URL, echo=False)
