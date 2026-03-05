@@ -23,7 +23,7 @@ from sqlalchemy.orm import sessionmaker, Session
 # 1. DATABASE SETUP
 
 
-DATABASE_URL = "postgresql://agentchiguru:agentchiguru123@localhost:5532/agentchiguru_db"
+DATABASE_URL = "postgresql://agriadmin:agriadmin123@localhost:5632/agri_db"
 
 engine = create_engine(DATABASE_URL, echo=True)  # echo=True logs SQL queries
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -157,9 +157,8 @@ def create_product(product: ProductCreate, db: Session = Depends(get_db)):
 # ─── READ ALL ────────────────────────────
 @app.get("/products", response_model=List[ProductResponse])
 def list_products(
-    skip: int = 0,
-    limit: int = 20,
-    category: Optional[str] = None,
+    page: int = 1,
+    page_size: int = 20,
     db: Session = Depends(get_db),
 ):
     """
@@ -168,11 +167,8 @@ def list_products(
     """
     query = db.query(Product)
 
-    # Optional filter by category
-    if category:
-        query = query.filter(Product.category == category)
-
-    products = query.offset(skip).limit(limit).all()
+    skip = (page - 1) * page_size
+    products = query.offset(skip).limit(page_size).all()
 
     return [
         ProductResponse(
