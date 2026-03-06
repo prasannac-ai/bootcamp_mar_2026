@@ -1,6 +1,7 @@
 from fastapi import FastAPI, APIRouter, HTTPException, status
 from pydantic import BaseModel
 import requests
+import uuid
 
 app = FastAPI()
 app_v1 = APIRouter(prefix="/api/v1",tags=["v1"])
