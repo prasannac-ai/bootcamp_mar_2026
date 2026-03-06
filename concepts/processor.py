@@ -70,7 +70,7 @@ class KafkaEventConsumer:
                 irrigation_service.create_irrigation_data(event)
 
         finally:
-            await consumer.stop()id
+            await consumer.stop()
 
 
 
