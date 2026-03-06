@@ -11,16 +11,11 @@ sqlalchemy
 psycopg2-binary
 redis
 
-# Authentication
-fastapi-users[sqlalchemy]
-
-# AsyncPG
-asyncpg
-
-
+# # Authentication
+# fastapi-users[sqlalchemy]
 
 # # Kafka
-# aiokafka
+aiokafka
 
 
 # # AI / ML - RAG, Agentic

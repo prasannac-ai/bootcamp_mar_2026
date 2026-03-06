@@ -13,12 +13,16 @@ services:
       dockerfile: Dockerfile_sgw
     ports:
       - "8001:8000"
+    depends_on:
+      kafka:
+        condition: service_healthy
   irrigation:
     build:
       context: .
       dockerfile: Dockerfile_irrigation
-    ports:
-      - "8002:8000"
+    depends_on:
+      kafka:
+        condition: service_healthy
 
   db_service:
     image: postgres:16-alpine
@@ -56,6 +60,17 @@ services:
       - "9094:9094"
     volumes:
       - kafka_data:/var/lib/kafka/data
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list || exit 1",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
 volumes:
   db_data:

@@ -1,19 +1,21 @@
 from fastapi import FastAPI, APIRouter, HTTPException, status
 from pydantic import BaseModel
+from ingestion import Event
 
 
-app = FastAPI()
-app_v1 = APIRouter(prefix="/api/v1",tags=["v1"])
 
 class IrrigationData(BaseModel):
     irrigation_id: str
     irrigation_status: str
     irrigation_duration: int
     
+class IrrigationService:
+    def __init__(self):
+        self.irrigation_data = []
 
-@app_v1.post("/irrigation-data")
-def create_irrigation_data(irrigation_data: IrrigationData):
-    return {"message": "Irrigation data created successfully"}
+    def create_irrigation_data(self, event: Event):
+        if event.temperature > 30:
+            print(f"Irrigation process initiated based on sensor {event.sensor_id} with temperature {event.temperature}", flush=True)
+        else:
+            print(f"Irrigation process not initiated based on sensor {event.sensor_id} with temperature {event.temperature}", flush=True)
 
-
-app.include_router(app_v1)
