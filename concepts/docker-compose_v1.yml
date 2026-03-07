@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: sf-qdrant
+    restart: unless-stopped
+    ports:
+      - "6433:6333"
+    volumes:
+      - vector_data:/semantic_vector_store/storage
+
+volumes:
+  vector_data:
